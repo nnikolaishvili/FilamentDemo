@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 class AuthorResource extends Resource
 {
     protected static ?string $model = Author::class;
-    protected static ?string $navigationGroup = 'Book Store';
+    protected static ?string $navigationGroup = 'Authors';
     protected static ?string $navigationIcon = 'heroicon-o-pencil';
 
     public static function form(Form $form): Form
@@ -41,7 +41,7 @@ class AuthorResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable()
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('phone_number')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),

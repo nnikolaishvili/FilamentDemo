@@ -34,7 +34,7 @@ class BookDetailRelationManager extends RelationManager
                         'hi' => 'Hindi',
                         'ja' => 'Japanese'
                     ])
-                    ->disabledOn('edit')
+                    ->visibleOn('create')
             ])->columns(1);
     }
 
@@ -45,7 +45,15 @@ class BookDetailRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('description'),
                 Tables\Columns\TextColumn::make('pages_count'),
-                Tables\Columns\TextColumn::make('language')
+                Tables\Columns\SelectColumn::make('language')
+                    ->options([
+                        'en' => 'English',
+                        'ka' => 'Georgian',
+                        'bg' => 'Bulgarian',
+                        'hi' => 'Hindi',
+                        'ja' => 'Japanese'
+                    ])
+                    ->selectablePlaceholder(false)
             ])
             ->filters([
                 //

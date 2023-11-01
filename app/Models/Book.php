@@ -26,12 +26,16 @@ class Book extends Model
         'thumbnail',
         'tags',
         'price',
-        'is_best_seller'
+        'is_best_seller',
+        'is_available'
     ];
 
     public function authors(): BelongsToMany
     {
-        return $this->belongsToMany(Author::class, 'author_book')->withPivot('role')->withTimestamps();
+        return $this->belongsToMany(Author::class, 'author_book')
+            ->withPivot('role_id')
+            ->using(AuthorBook::class)
+            ->withTimestamps();
     }
 
     public function bookDetail(): HasOne

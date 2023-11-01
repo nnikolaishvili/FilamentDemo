@@ -8,6 +8,7 @@ use App\Models\Book;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -41,8 +42,7 @@ class BookResource extends Resource
                             'max:10000'
                         ])
                         ->prefix('€'),
-                    Forms\Components\Toggle::make('is_best_seller')
-                        ->label('Is Best Seller'),
+                    Forms\Components\Toggle::make('is_best_seller')->label('Is Best Seller'),
                 ])->columnSpan(2),
                 Forms\Components\Group::make()->schema([
                     Forms\Components\Section::make('Publication')->schema([
@@ -78,6 +78,8 @@ class BookResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('No books yet')
+            ->paginated([5, 10, 25, 'all'])
             ->columns([
                 Tables\Columns\ImageColumn::make('thumbnail')
                     ->label('Image'),
@@ -90,7 +92,8 @@ class BookResource extends Resource
                 Tables\Columns\TextColumn::make('publication_date')
                     ->label('Published on')
                     ->date()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('price')
                     ->money()
                     ->sortable(),
@@ -100,6 +103,9 @@ class BookResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\IconColumn::make('is_best_seller')
                     ->label('Best Seller')
+                    ->boolean(),
+                Tables\Columns\IconColumn::make('is_available')
+                    ->label('Is available')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -111,22 +117,31 @@ class BookResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\SelectFilter::make('genre_id')
                     ->label('Genres')
                     ->relationship('genre', 'name')
                     ->searchable()
                     ->multiple()
                     ->preload(),
-                Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\TernaryFilter::make('is_best_seller')
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\Action::make('Sold')
+                    ->action(fn (Book $book) => self::makeUnavailable($book))
+                    ->color(Color::Gray)
+                    ->icon('heroicon-o-x-mark')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make()
                 ]),
             ]);
     }
@@ -135,7 +150,8 @@ class BookResource extends Resource
     {
         return [
             RelationManagers\BookDetailRelationManager::make(),
-            RelationManagers\AuthorsRelationManager::make()
+            RelationManagers\AuthorsRelationManager::make(),
+            RelationManagers\ReviewsRelationManager::make()
         ];
     }
 
@@ -146,5 +162,11 @@ class BookResource extends Resource
             'create' => Pages\CreateBook::route('/create'),
             'edit' => Pages\EditBook::route('/{record}/edit'),
         ];
+    }
+
+    public static function makeUnavailable(Book $record): void
+    {
+        $record->is_available = false;
+        $record->save();
     }
 }
