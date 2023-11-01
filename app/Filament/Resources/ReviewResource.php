@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ReviewResource\Pages;
 use App\Filament\Resources\ReviewResource\RelationManagers;
-use App\Models\Blog;
 use App\Models\Book;
 use App\Models\Publisher;
 use App\Models\Review;
@@ -33,8 +32,10 @@ class ReviewResource extends Resource
                     Forms\Components\MorphToSelect::make('reviewable')
                         ->label('Where to add review')
                         ->types([
-                            Forms\Components\MorphToSelect\Type::make(Book::class)->titleAttribute('name'),
-                            Forms\Components\MorphToSelect\Type::make(Publisher::class)->titleAttribute('name'),
+                            Forms\Components\MorphToSelect\Type::make(Book::class)
+                                ->titleAttribute('name'),
+                            Forms\Components\MorphToSelect\Type::make(Publisher::class)
+                                ->titleAttribute('name'),
                         ])
                         ->searchable()
                         ->preload()
@@ -59,7 +60,7 @@ class ReviewResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+//                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

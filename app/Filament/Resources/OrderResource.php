@@ -85,7 +85,9 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('number'),
+                Tables\Columns\TextColumn::make('number')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('user.name'),
                 Tables\Columns\SelectColumn::make('status')
                     ->options([
@@ -96,11 +98,12 @@ class OrderResource extends Resource
                     ->selectablePlaceholder(false),
                 Tables\Columns\TextColumn::make('date')->date(),
                 Tables\Columns\TextColumn::make('order_items_count')
-                    ->label('Items')
-                    ->counts('orderItems'),
+                    ->label('Items Count')
+                    ->counts('orderItems')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('orderItems.total_price')
                     ->prefix('€')
-                    ->label('Order price')
+                    ->label('Total price')
                     ->getStateUsing(function (Order $order) {
                         $total = 0;
                         $orderItems = $order->orderItems()->select('total_price', 'amount')->get();
@@ -119,6 +122,7 @@ class OrderResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

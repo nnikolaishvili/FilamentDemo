@@ -45,7 +45,8 @@ class PublisherResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('logo_url'),
+                Tables\Columns\ImageColumn::make('logo_url')
+                    ->label('Logo'),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),

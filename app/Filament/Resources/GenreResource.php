@@ -38,10 +38,14 @@ class GenreResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('is_popular')->label('Popular')->boolean()
+                Tables\Columns\IconColumn::make('is_popular')
+                    ->label('Popular')
+                    ->boolean()
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_popular')->label('Popular')

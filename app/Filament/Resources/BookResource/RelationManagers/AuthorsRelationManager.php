@@ -40,6 +40,7 @@ class AuthorsRelationManager extends RelationManager
                     ->form(fn (Tables\Actions\AttachAction $action): array => [
                         $action->getRecordSelect(),
                         Forms\Components\Select::make('role_id')
+                            ->label('Role')
                             ->required()
                             ->options(AuthorRole::query()->pluck('name','id'))
                     ]),

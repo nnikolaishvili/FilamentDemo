@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\BookResource\RelationManagers;
 
-use Filament\Actions\Action;
+use App\Enums\Book\Language;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -27,13 +27,7 @@ class BookDetailRelationManager extends RelationManager
                     ->visibleOn('create'),
                 Forms\Components\Select::make('language')
                     ->required()
-                    ->options([
-                        'en' => 'English',
-                        'ka' => 'Georgian',
-                        'bg' => 'Bulgarian',
-                        'hi' => 'Hindi',
-                        'ja' => 'Japanese'
-                    ])
+                    ->options(Language::getCases())
                     ->visibleOn('create')
             ])->columns(1);
     }
@@ -46,13 +40,7 @@ class BookDetailRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('description'),
                 Tables\Columns\TextColumn::make('pages_count'),
                 Tables\Columns\SelectColumn::make('language')
-                    ->options([
-                        'en' => 'English',
-                        'ka' => 'Georgian',
-                        'bg' => 'Bulgarian',
-                        'hi' => 'Hindi',
-                        'ja' => 'Japanese'
-                    ])
+                    ->options(Language::getCases())
                     ->selectablePlaceholder(false)
             ])
             ->filters([

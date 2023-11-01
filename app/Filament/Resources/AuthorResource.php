@@ -26,9 +26,13 @@ class AuthorResource extends Resource
                     ->label('Name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('email')->email(),
-                Forms\Components\TextInput::make('phone_number')->tel()
-            ]);
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->placeholder('example@email.com'),
+                Forms\Components\TextInput::make('phone_number')
+                    ->tel()
+                    ->placeholder('+000111222333')
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table

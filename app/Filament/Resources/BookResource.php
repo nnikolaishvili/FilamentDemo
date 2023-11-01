@@ -42,9 +42,12 @@ class BookResource extends Resource
                             'max:10000'
                         ])
                         ->prefix('€'),
-                    Forms\Components\Toggle::make('is_best_seller')->label('Is Best Seller'),
-                    Forms\Components\Toggle::make('is_available')->label('Is Available'),
+                    Forms\Components\Toggle::make('is_best_seller')
+                        ->label('Is Best Seller'),
+                    Forms\Components\Toggle::make('is_available')
+                        ->label('Is Available'),
                 ])->columnSpan(2),
+
                 Forms\Components\Group::make()->schema([
                     Forms\Components\Section::make('Publication')->schema([
                         Forms\Components\Select::make('publisher_id')
@@ -96,7 +99,7 @@ class BookResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('price')
-                    ->money()
+                    ->money('EUR')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('genre.name')
                     ->numeric()
@@ -150,9 +153,9 @@ class BookResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\BookDetailRelationManager::make(),
-            RelationManagers\AuthorsRelationManager::make(),
-            RelationManagers\ReviewsRelationManager::make()
+            RelationManagers\BookDetailRelationManager::class,
+            RelationManagers\AuthorsRelationManager::class,
+            RelationManagers\ReviewsRelationManager::class
         ];
     }
 
