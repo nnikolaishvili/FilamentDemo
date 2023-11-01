@@ -14,11 +14,6 @@ class EditBook extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('Make unavailable')->action(function () {
-                return $this->record->update([
-                    'is_out_of_stock' => true
-                ]);
-            })->color(Color::Gray)->url(fn (): string => route('filament.admin.resources.books.index')),
             Actions\DeleteAction::make(),
         ];
     }

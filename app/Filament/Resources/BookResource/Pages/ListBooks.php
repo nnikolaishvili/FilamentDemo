@@ -20,16 +20,23 @@ class ListBooks extends ListRecords
         ];
     }
 
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            BookResource\Widgets\BooksOverview::make()
+        ];
+    }
+
     public function getTabs(): array
     {
         return [
-            'All' => Tab::make()
-                ->badge(Book::query()->count()),
+            'All' => Tab::make(),
+//                ->badge(Book::query()->count()),
             'Available' => Tab::make()
-                ->badge(Book::query()->where('is_available', true)->count())
+//                ->badge(Book::query()->where('is_available', true)->count())
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('is_available', true)),
             'Sold' => Tab::make()
-                ->badge(Book::query()->where('is_available', false)->count())
+//                ->badge(Book::query()->where('is_available', false)->count())
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('is_available', false)),
         ];
     }

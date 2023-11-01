@@ -43,6 +43,7 @@ class BookResource extends Resource
                         ])
                         ->prefix('€'),
                     Forms\Components\Toggle::make('is_best_seller')->label('Is Best Seller'),
+                    Forms\Components\Toggle::make('is_available')->label('Is Available'),
                 ])->columnSpan(2),
                 Forms\Components\Group::make()->schema([
                     Forms\Components\Section::make('Publication')->schema([
@@ -105,7 +106,7 @@ class BookResource extends Resource
                     ->label('Best Seller')
                     ->boolean(),
                 Tables\Columns\IconColumn::make('is_available')
-                    ->label('Is available')
+                    ->label('Is Available')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

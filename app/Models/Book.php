@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -56,5 +57,15 @@ class Book extends Model
     public function reviews(): MorphMany
     {
         return $this->morphMany(Review::class, 'reviewable');
+    }
+
+    public function scopeAvailable(Builder $builder): Builder
+    {
+        return $builder->where('is_available', true);
+    }
+
+    public function scopeOutOfStock(Builder $builder): Builder
+    {
+        return $builder->where('is_available', false);
     }
 }
