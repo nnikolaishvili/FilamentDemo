@@ -7,7 +7,9 @@ use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Book;
 use App\Models\Order;
 use App\Models\OrderItem;
+use Carbon\Carbon;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -96,7 +98,8 @@ class OrderResource extends Resource
                         'delivered' => 'Delivered'
                     ])
                     ->selectablePlaceholder(false),
-                Tables\Columns\TextColumn::make('date')->date(),
+                Tables\Columns\TextColumn::make('date')
+                    ->date(),
                 Tables\Columns\TextColumn::make('order_items_count')
                     ->label('Items Count')
                     ->counts('orderItems')
@@ -118,16 +121,29 @@ class OrderResource extends Resource
                     })
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('date')
+                    ->form([
+                        DatePicker::make('from')->label('Created from'),
+                        DatePicker::make('until')->label('Created to'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('date', '>=', $date),
+                            )
+                            ->when(
+                                $data['until'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('date', '<=', $date),
+                            );
+                    })
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-//                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                //
             ]);
     }
 
