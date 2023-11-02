@@ -30,7 +30,11 @@ class ReviewsRelationManager extends RelationManager
             ->recordTitleAttribute('comment')
             ->columns([
                 Tables\Columns\TextColumn::make('comment'),
-                Tables\Columns\TextColumn::make('user.email')->label('From')
+                Tables\Columns\TextColumn::make('user.email')->label('From'),
+                Tables\Columns\TextColumn::make('rating')
+                    ->summarize([
+                        Tables\Columns\Summarizers\Average::make(),
+                    ])
             ])
             ->filters([
                 //

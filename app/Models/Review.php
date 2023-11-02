@@ -13,7 +13,8 @@ class Review extends Model
         'comment',
         'user_id',
         'reviewable_type',
-        'reviewable_id'
+        'reviewable_id',
+        'rating'
     ];
 
     public function reviewable(): MorphTo

@@ -29,6 +29,15 @@ class ReviewResource extends Resource
                 Forms\Components\Group::make()->schema([
                     Forms\Components\TextInput::make('comment')
                         ->required(),
+                    Forms\Components\TextInput::make('rating')
+                        ->numeric()
+                        ->step(0.5)
+                        ->default(10)
+                        ->rules([
+                            'min:0',
+                            'max:10'
+                        ])
+                        ->required(),
                     Forms\Components\MorphToSelect::make('reviewable')
                         ->label('Where to add review')
                         ->types([
@@ -51,6 +60,7 @@ class ReviewResource extends Resource
                 Tables\Columns\TextColumn::make('reviewable_id'),
                 Tables\Columns\TextColumn::make('reviewable.name'),
                 Tables\Columns\TextColumn::make('comment'),
+                Tables\Columns\TextColumn::make('rating'),
             ])
             ->filters([
                 //
