@@ -21,4 +21,14 @@ class CreateOrder extends CreateRecord
 
         return $data;
     }
+
+    /**
+     * Modify redirect url
+     *
+     * @return string
+     */
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

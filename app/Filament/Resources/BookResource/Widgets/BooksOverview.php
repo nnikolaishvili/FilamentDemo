@@ -16,7 +16,7 @@ class BooksOverview extends BaseWidget
             Stat::make('All', (clone $query)->count()),
             Stat::make('Available',(clone $query)->available()->count()),
             Stat::make('Sold', (clone $query)->outOfStock()->count()),
-            Stat::make('Total Sales Revenue ', (clone $query)->outOfStock()->sum('price')),
+            Stat::make('Total Sales Revenue ', '€' . (clone $query)->outOfStock()->sum('price')),
         ];
     }
 }

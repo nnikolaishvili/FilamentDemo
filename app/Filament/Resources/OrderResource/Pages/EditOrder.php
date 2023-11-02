@@ -13,7 +13,17 @@ class EditOrder extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-//            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make(),
         ];
+    }
+
+    /**
+     * Modify redirect url
+     *
+     * @return string
+     */
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
     }
 }
